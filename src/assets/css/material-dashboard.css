@@ -14445,6 +14445,8 @@ h2.title {
     border: 0;
     border-radius: 3px;
     padding: 0 15px;
+  justify-content: space-evenly;
+
 }
 
 .nav-tabs .nav-item .nav-link {
@@ -19412,7 +19414,7 @@ Copyright (c) 2015 Daniel Eden
     }
 
     .navbar-toggler .icon-bar:nth-child(4) {
-        bottom: 0px;
+        bottom: 0;
         -webkit-animation: bottombar-back 500ms linear 0s;
         -moz-animation: bottombar-back 500ms linear 0s;
         animation: bottombar-back 500ms 0s;

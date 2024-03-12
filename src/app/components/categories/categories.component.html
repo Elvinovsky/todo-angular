@@ -1,0 +1,20 @@
+<div
+  class="sidebar"
+  data-background-color="white"
+  data-color="purple"
+  data-image="src/assets/img/sidebar-1.jpg">
+  <div class="logo">
+    <span class="simple-text logo-normal"> Creative Tim </span>
+  </div>
+  <div class="sidebar-wrapper">
+    <ul
+      class="nav"
+      *ngFor="let category of categories; index as i; trackBy: trackByFn">
+      <li class="nav-item active">
+        <a class="nav-link">
+          <p>{{ category.title }}</p>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

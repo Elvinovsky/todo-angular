@@ -1,31 +1,26 @@
-import {
-  ICategory,
-  IPriority,
-  ITask
-} from "./types";
+import { ICategory, IPriority, ITask } from './types';
 
 export class Db {
   static categories: ICategory[] = [
-  {id: 1, title: 'Работа'},
-  {id: 2, title: 'Семья'},
-  {id: 3, title: 'Учеба'},
-  {id: 4, title: 'Отдых'},
-  {id: 5, title: 'Спорт'},
-  {id: 6, title: 'Еда'},
-  {id: 7, title: 'Финансы'},
-  {id: 8, title: 'Гаджеты'},
-  {id: 9, title: 'Здоровье'},
-  {id: 10, title: 'Автомобиль'},
-  {id: 11, title: 'Ремонт'},
-]
-
-  static priorities: IPriority[] = [
-    {id: 1, title: 'Низкий', color: '#e5e5e5'},
-    {id: 2, title: 'Средний', color: '#85D1B2'},
-    {id: 3, title: 'Высокий', color: '#F1828D'},
-    {id: 4, title: 'Очень срочно!!', color: '#F1128D'}
+    { id: 1, title: 'Работа', icon: 'Work' },
+    { id: 2, title: 'Семья', icon: 'Family' },
+    { id: 3, title: 'Учеба', icon: 'Learn' },
+    { id: 4, title: 'Отдых', icon: 'Relax' },
+    { id: 5, title: 'Спорт', icon: 'Sport' },
+    { id: 6, title: 'Еда', icon: 'Food' },
+    { id: 7, title: 'Финансы', icon: 'Finance' },
+    { id: 8, title: 'Гаджеты', icon: 'Gadgets' },
+    { id: 9, title: 'Здоровье', icon: 'Health' },
+    { id: 10, title: 'Автомобиль', icon: 'Automobile' },
+    { id: 11, title: 'Ремонт', icon: 'Repairs' },
   ];
 
+  static priorities: IPriority[] = [
+    { id: 1, title: 'Низкий', color: '#e5e5e5' },
+    { id: 2, title: 'Средний', color: '#85D1B2' },
+    { id: 3, title: 'Высокий', color: '#F1828D' },
+    { id: 4, title: 'Очень срочно!!', color: '#F1128D' },
+  ];
 
   // не забывать - индексация приоритетов и категорий начинается с нуля
   static tasks: ITask[] = [
@@ -35,7 +30,7 @@ export class Db {
       priority: Db.priorities[2],
       completed: false,
       category: Db.categories[9],
-      deadline: new Date('2019-04-10')
+      deadline: new Date('2019-04-10'),
     },
 
     {
@@ -44,7 +39,7 @@ export class Db {
       priority: Db.priorities[0],
       completed: false,
       category: Db.categories[0],
-      deadline: new Date('2019-04-11')
+      deadline: new Date('2019-04-11'),
     },
 
     {
@@ -52,7 +47,7 @@ export class Db {
       title: 'Убраться у себя в комнате, полить растения',
       priority: Db.priorities[2],
       completed: true,
-      category: Db.categories[1]
+      category: Db.categories[1],
     },
 
     {
@@ -61,13 +56,13 @@ export class Db {
       priority: Db.priorities[1],
       completed: false,
       category: Db.categories[1],
-      deadline: new Date('2019-08-17')
+      deadline: new Date('2019-08-17'),
     },
     {
       id: 5,
       title: 'Найти и выучить учебник по квантовой физике',
       completed: false,
-      category: Db.categories[2]
+      category: Db.categories[2],
     },
     {
       id: 6,
@@ -75,7 +70,7 @@ export class Db {
       priority: Db.priorities[1],
       completed: true,
       category: Db.categories[2],
-      deadline: new Date('2019-06-11')
+      deadline: new Date('2019-06-11'),
     },
 
     {
@@ -83,13 +78,13 @@ export class Db {
       title: 'Найти билеты в Турцию, выбрать отель',
       priority: Db.priorities[2],
       completed: false,
-      category: Db.categories[3]
+      category: Db.categories[3],
     },
     {
       id: 8,
       title: 'Приготовить ужин для всей семьи (семга с картошкой)',
       completed: false,
-      category: Db.categories[5]
+      category: Db.categories[5],
     },
     {
       id: 9,
@@ -97,20 +92,20 @@ export class Db {
       priority: Db.priorities[2],
       completed: false,
       category: Db.categories[4],
-      deadline: new Date('2019-03-12')
+      deadline: new Date('2019-03-12'),
     },
     {
       id: 10,
       title: 'Пробежать 100 м',
       priority: Db.priorities[0],
       completed: true,
-      category: Db.categories[4]
+      category: Db.categories[4],
     },
 
     {
       id: 11,
       title: 'Организовать детский праздник ',
-      completed: false
+      completed: false,
     },
 
     {
@@ -118,7 +113,7 @@ export class Db {
       title: 'Сходить на лекцию "Как научиться программировать на Java"',
       priority: Db.priorities[1],
       completed: false,
-      category: Db.categories[2]
+      category: Db.categories[2],
     },
     {
       id: 13,
@@ -126,30 +121,29 @@ export class Db {
       priority: Db.priorities[2],
       completed: false,
       category: Db.categories[5],
-      deadline: new Date('2019-05-11')
+      deadline: new Date('2019-05-11'),
     },
 
     {
       id: 14,
       title: 'Провести собрание по поводу всех проектов',
       completed: true,
-      category: Db.categories[0]
+      category: Db.categories[0],
     },
 
     {
       id: 15,
       title: 'Сдать экзамен по Java',
       priority: Db.priorities[2],
-      completed: true
+      completed: true,
     },
-
 
     {
       id: 16,
       title: 'Положить 100 000 р в банк на депозит',
       priority: Db.priorities[3],
       completed: false,
-      category: Db.categories[6]
+      category: Db.categories[6],
     },
 
     {
@@ -157,7 +151,7 @@ export class Db {
       title: 'Попросить аванс на работе',
       priority: Db.priorities[2],
       completed: false,
-      category: Db.categories[6]
+      category: Db.categories[6],
     },
 
     {
@@ -166,18 +160,16 @@ export class Db {
       priority: Db.priorities[3],
       completed: false,
       category: Db.categories[8],
-      deadline: new Date('2020-12-11')
-
+      deadline: new Date('2020-12-11'),
     },
 
     {
       id: 19,
       title: 'Сравнить новый айпад с самсунгом',
-      priority:  Db.priorities[0],
+      priority: Db.priorities[0],
       completed: false,
       category: Db.categories[7],
-      deadline: new Date('2019-10-11')
-
+      deadline: new Date('2019-10-11'),
     },
 
     {
@@ -186,10 +178,7 @@ export class Db {
       priority: Db.priorities[0],
       completed: false,
       category: Db.categories[4],
-      deadline: new Date('2019-03-17')
-
-    }
-
+      deadline: new Date('2019-03-17'),
+    },
   ];
-
 }
