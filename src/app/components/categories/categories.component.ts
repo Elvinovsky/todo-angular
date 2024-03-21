@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from '../../services/http.service';
+import { DataService } from '../../services/data.service';
 import { ICategory } from '../../../data/types';
 
 @Component({
@@ -8,13 +8,21 @@ import { ICategory } from '../../../data/types';
   styleUrl: './categories.component.css',
 })
 export class CategoriesComponent implements OnInit {
+  selectedCategory = {} as ICategory;
   public categories: ICategory[] = [];
-  constructor(private readonly httpService: HttpService) {}
+  constructor(private readonly httpService: DataService) {}
   ngOnInit() {
-    this.categories = this.httpService.getCategories();
+    this.httpService.categorySubject.subscribe(
+      categories => (this.categories = categories)
+    );
   }
 
   trackByFn(index: number, category: ICategory) {
     return category.id;
+  }
+
+  showTasksByCategory(category: ICategory) {
+    this.selectedCategory = category;
+    return this.httpService.fillTasksByCategories(category);
   }
 }

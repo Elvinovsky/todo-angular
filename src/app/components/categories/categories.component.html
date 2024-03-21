@@ -10,9 +10,16 @@
     <ul
       class="nav"
       *ngFor="let category of categories; index as i; trackBy: trackByFn">
-      <li class="nav-item active">
-        <a class="nav-link">
-          <p>{{ category.title }}</p>
+      <li class="nav-item" [class.active]="category.id === selectedCategory.id">
+        <a
+          tabindex="0"
+          (keydown.enter)="showTasksByCategory(category)"
+          class="nav-link"
+          style="cursor: pointer"
+          (click)="showTasksByCategory(category)">
+          <span>
+            {{ category.title }}
+          </span>
         </a>
       </li>
     </ul>

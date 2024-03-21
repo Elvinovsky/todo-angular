@@ -22,79 +22,106 @@
       </div>
     </div>
   </div>
-  <div class="card-body">
-    <div class="tab-content">
-      <div class="tab-pane active">
-        <div style="height: 10px"></div>
-        <table mat-table [dataSource]="tasks" class="table">
-          <ng-container matColumnDef="completed">
-            <th mat-header-cell *matHeaderCellDef>
-              <mat-icon>done_all</mat-icon>
-            </th>
-            <td mat-cell *matCellDef="let task">
-              <mat-checkbox
-                [(ngModel)]="task.completed"
-                (change)="handleCheckedCompleted(task.id, task.completed)">
-              </mat-checkbox>
-            </td>
-          </ng-container>
+  <div class="card-body" *ngIf="tasks.length > 0; else elseBlock">
+    <mat-table
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      class="table table-responsive">
+      <ng-container matColumnDef="completed">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <mat-icon>done_all</mat-icon>
+        </th>
+        <td mat-cell *matCellDef="let task">
+          <mat-checkbox
+            [id]="task.id"
+            [(ngModel)]="task.completed"
+            (click)="handleCheckedCompleted(task.id, task.completed)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
 
-          <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef>Задача</th>
-            <td mat-cell *matCellDef="let task">
-              {{ task.title }}
-            </td>
-          </ng-container>
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Задача</th>
+        <td
+          mat-cell
+          *matCellDef="let task"
+          [ngClass]="{ completed: task.completed }">
+          {{ task.title }}
+        </td>
+      </ng-container>
 
-          <ng-container matColumnDef="deadline">
-            <th mat-header-cell *matHeaderCellDef>Срок</th>
-            <td mat-cell *matCellDef="let task">
-              {{ task.deadline }}
-            </td>
-          </ng-container>
+      <ng-container matColumnDef="deadline">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Срок</th>
+        <td
+          mat-cell
+          *matCellDef="let task"
+          [ngClass]="{ completed: task.completed && task.deadline }">
+          {{ task.deadline ? (task.deadline | date) : '__' }}
+        </td>
+      </ng-container>
 
-          <ng-container matColumnDef="priority">
-            <th mat-header-cell *matHeaderCellDef>Приоритет</th>
-            <td mat-cell *matCellDef="let task">
-              {{ task.priority?.title }}
-            </td>
-          </ng-container>
+      <ng-container matColumnDef="priority">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Приоритет</th>
+        <td
+          mat-cell
+          *matCellDef="let task"
+          [ngClass]="{ completed: task.completed && task.priority?.title }"
+          [ngStyle]="{
+            color: !task.completed ? task.priority?.color : ''
+          }">
+          {{ task.priority?.title ? task.priority!.title : '__' }}
+        </td>
+      </ng-container>
 
-          <ng-container matColumnDef="category">
-            <th mat-header-cell *matHeaderCellDef>Категория</th>
-            <td mat-cell *matCellDef="let task">
-              {{ task.category?.title }}
-            </td>
-          </ng-container>
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Категория</th>
+        <td
+          mat-cell
+          *matCellDef="let task"
+          [ngClass]="{ completed: task.completed && task.category?.title }">
+          {{ task.category?.title ? task.category.title : '__' }}
+        </td>
+      </ng-container>
 
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>Ред.</th>
-            <td mat-cell *matCellDef="let task" class="td-actions text-right">
-              <button
-                mat-icon-button
-                [tabIndex]="task.id"
-                class="btn btn-primary btn-link btn-sm"
-                rel="tooltip"
-                title="Изменить задачу"
-                type="button">
-                <i class="material-icons">edit</i>
-              </button>
-              <button
-                mat-icon-button
-                [tabIndex]="task.id"
-                class="btn btn-danger btn-link btn-sm"
-                rel="tooltip"
-                title="Удалить задачу"
-                type="button">
-                <i class="material-icons">delete</i>
-              </button>
-            </td>
-          </ng-container>
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef>Ред.</th>
+        <td mat-cell *matCellDef="let task" class="td-actions text-right">
+          <button
+            mat-icon-button
+            [tabIndex]="task.id"
+            class="btn btn-primary btn-link btn-sm"
+            rel="tooltip"
+            title="Изменить задачу"
+            type="button">
+            <i class="material-icons">edit</i>
+          </button>
+        </td>
+      </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
-      </div>
-    </div>
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>Уд.</th>
+        <td mat-cell *matCellDef="let task" class="td-actions text-right">
+          <button
+            mat-icon-button
+            [tabIndex]="task.id"
+            class="btn btn-danger btn-link btn-sm"
+            rel="tooltip"
+            title="Удалить задачу"
+            type="button">
+            <i class="material-icons">delete</i>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </mat-table>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20, 100]"
+      showFirstLastButtons></mat-paginator>
   </div>
+  <ng-template #elseBlock>
+    <p class="empty_tasks">Заметок нет...</p>
+  </ng-template>
 </div>

@@ -1,0 +1,12 @@
+.completed {
+  text-decoration: line-through ;
+  font-style: oblique;
+  color: #adadad;
+}
+
+.empty_tasks {
+  text-align: center;
+  font-size: 20px;
+  color: #b0b0b0;
+  margin: 20px
+}

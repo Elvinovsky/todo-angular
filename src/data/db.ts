@@ -2,17 +2,17 @@ import { ICategory, IPriority, ITask } from './types';
 
 export class Db {
   static categories: ICategory[] = [
-    { id: 1, title: 'Работа', icon: 'Work' },
-    { id: 2, title: 'Семья', icon: 'Family' },
-    { id: 3, title: 'Учеба', icon: 'Learn' },
-    { id: 4, title: 'Отдых', icon: 'Relax' },
-    { id: 5, title: 'Спорт', icon: 'Sport' },
-    { id: 6, title: 'Еда', icon: 'Food' },
-    { id: 7, title: 'Финансы', icon: 'Finance' },
-    { id: 8, title: 'Гаджеты', icon: 'Gadgets' },
-    { id: 9, title: 'Здоровье', icon: 'Health' },
-    { id: 10, title: 'Автомобиль', icon: 'Automobile' },
-    { id: 11, title: 'Ремонт', icon: 'Repairs' },
+    { id: 1, title: 'Работа' },
+    { id: 2, title: 'Семья' },
+    { id: 3, title: 'Учеба' },
+    { id: 4, title: 'Отдых' },
+    { id: 5, title: 'Спорт' },
+    { id: 6, title: 'Еда' },
+    { id: 7, title: 'Финансы' },
+    { id: 8, title: 'Гаджеты' },
+    { id: 9, title: 'Здоровье' },
+    { id: 10, title: 'Автомобиль' },
+    { id: 11, title: 'Ремонт' },
   ];
 
   static priorities: IPriority[] = [
@@ -44,7 +44,7 @@ export class Db {
 
     {
       id: 3,
-      title: 'Убраться у себя в комнате, полить растения',
+      title: 'Залить бензин полный бак',
       priority: Db.priorities[2],
       completed: true,
       category: Db.categories[1],
@@ -52,7 +52,8 @@ export class Db {
 
     {
       id: 4,
-      title: 'Сходить в парк с семьей, пригласить друзей',
+      title:
+        'Сходить в парк с семьей, пригласить друзей Залить бензин полный бак',
       priority: Db.priorities[1],
       completed: false,
       category: Db.categories[1],

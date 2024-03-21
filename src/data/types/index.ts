@@ -1,7 +1,6 @@
 export interface ICategory {
   id: number;
   title: string;
-  icon?: string;
 }
 
 export interface IPriority {
