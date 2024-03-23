@@ -1,4 +1,4 @@
-import { ICategory, IPriority, ITask } from './types';
+import { ICategory, IPriority, ITask } from '../models';
 
 export class Db {
   static categories: ICategory[] = [

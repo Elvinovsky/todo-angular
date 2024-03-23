@@ -1,20 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { MatTooltip } from '@angular/material/tooltip';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { DataService } from './services/data.service';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { FormsModule } from '@angular/forms';
-import {
-  CdkColumnDef,
-  CdkHeaderCell,
-  CdkHeaderCellDef,
-} from '@angular/cdk/table';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatIcon } from '@angular/material/icon';
@@ -26,19 +18,17 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSortModule } from '@angular/material/sort';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginator } from '@angular/material/paginator';
+import { TaskDAOArray } from './data/dao/impl/TaskDAOArray';
+import { CategoryDAOArray } from './data/dao/impl/CategoryDAOArray';
+import { PriorityDAOArray } from './data/dao/impl/PriorityDAOArray';
 
 @NgModule({
   declarations: [AppComponent, CategoriesComponent, TasksComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
     MatSlideToggleModule,
-    MatTooltip,
     FormsModule,
-    CdkHeaderCell,
-    CdkColumnDef,
-    CdkHeaderCellDef,
     HttpClientModule,
     MatTableModule,
     MatCheckbox,
@@ -51,7 +41,13 @@ import { MatPaginator } from '@angular/material/paginator';
     MatButtonModule,
     MatPaginator,
   ],
-  providers: [provideAnimationsAsync(), DataService],
+  providers: [
+    provideAnimationsAsync(),
+    DataService,
+    TaskDAOArray,
+    CategoryDAOArray,
+    PriorityDAOArray,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

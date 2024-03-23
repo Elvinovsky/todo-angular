@@ -1,28 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { ICategory } from '../../../data/types';
+import { ICategory } from '../../models';
 
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',
-  styleUrl: './categories.component.css',
+  styleUrls: ['./categories.component.css'],
 })
 export class CategoriesComponent implements OnInit {
   selectedCategory = {} as ICategory;
-  public categories: ICategory[] = [];
+  @Input({ required: true }) categories!: ICategory[];
   constructor(private readonly httpService: DataService) {}
   ngOnInit() {
-    this.httpService.categorySubject.subscribe(
-      categories => (this.categories = categories)
-    );
+    // this.httpService
+    //   .getAllCategories()
+    //   .subscribe(categories => (this.categories = categories));
   }
 
   trackByFn(index: number, category: ICategory) {
     return category.id;
   }
 
-  showTasksByCategory(category: ICategory) {
-    this.selectedCategory = category;
-    return this.httpService.fillTasksByCategories(category);
+  showTasksByCategory(category: ICategory): void {
+    // this.selectedCategory = category;
+    // this.httpService.fillTasksByCategories(category);
   }
 }

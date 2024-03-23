@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <app-categories></app-categories>
+  <app-categories [categories]="categories"></app-categories>
   <div class="main-panel">
     <!-- Navbar -->
     <nav
@@ -166,7 +166,7 @@
             </div>
           </div>
         </div>
-        <app-tasks></app-tasks>
+        <app-tasks [tasks]="tasks"></app-tasks>
       </div>
     </div>
     <footer class="footer">

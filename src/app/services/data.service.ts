@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ICategory, ITask } from '../../data/types';
-import { Db } from '../../data/db';
-import { BehaviorSubject } from 'rxjs';
+import { ICategory } from '../models';
+import { Db } from '../data/db';
+import { TaskDAOArray } from '../data/dao/impl/TaskDAOArray';
+import { CategoryDAOArray } from '../data/dao/impl/CategoryDAOArray';
 
 export interface ITaskResponse {
   id: number;
@@ -22,15 +22,21 @@ export interface IPriorityResponse {
   providedIn: 'root',
 })
 export class DataService {
-  tasksSubject = new BehaviorSubject<ITask[]>(Db.tasks);
-  categorySubject = new BehaviorSubject<ICategory[]>(Db.categories);
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private taskDAOArray: TaskDAOArray,
+    private categoryDAOArray: CategoryDAOArray
+  ) {}
+
+  getAllCategories() {
+    return this.categoryDAOArray.getAll();
+  }
+
+  getAll() {
+    return this.taskDAOArray.getAll();
+  }
 
   fillTasksByCategories(category: ICategory) {
-    const filteredTasks = Db.tasks.filter(
-      item => item.category?.id === category.id
-    );
-    this.tasksSubject.next(filteredTasks);
+    return this.taskDAOArray.search(category);
   }
 
   toggleCompletedTask(id: number, completed: boolean) {

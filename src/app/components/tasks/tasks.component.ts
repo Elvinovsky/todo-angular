@@ -1,9 +1,15 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { DataService } from '../../services/data.service';
-import { ITask } from '../../../data/types';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { ITask } from '../../models';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-tasks',
@@ -11,21 +17,18 @@ import { MatSort } from '@angular/material/sort';
   styleUrls: ['./tasks.component.css'],
 })
 export class TasksComponent implements OnInit, AfterViewInit {
-  public tasks: ITask[] = [];
+  @ViewChild(MatPaginator) private paginator!: MatPaginator;
+  @ViewChild(MatSort) private sort!: MatSort;
 
-  protected dataSource: MatTableDataSource<ITask> =
-    new MatTableDataSource<ITask>();
+  @Input({ required: true }) tasks!: ITask[];
+  dataSource: MatTableDataSource<ITask>;
 
-  @ViewChild(MatPaginator, { static: false }) private paginator!: MatPaginator;
-  @ViewChild(MatSort, { static: false }) private sort!: MatSort;
-
-  constructor(private readonly httpService: DataService) {}
+  constructor(private readonly dataService: DataService) {
+    this.dataSource = new MatTableDataSource<ITask>();
+  }
 
   ngOnInit() {
-    this.httpService.tasksSubject.subscribe(tasks => {
-      this.tasks = tasks;
-      this.refreshTable();
-    });
+    this.fillTable();
   }
 
   ngAfterViewInit() {
@@ -34,10 +37,10 @@ export class TasksComponent implements OnInit, AfterViewInit {
   }
 
   handleCheckedCompleted(id: number, completed: boolean) {
-    this.httpService.toggleCompletedTask(id, completed);
+    this.dataService.toggleCompletedTask(id, completed);
   }
 
-  refreshTable() {
+  fillTable() {
     this.dataSource.data = this.tasks;
     this.dataSource.sortingDataAccessor = (task, sortHeaderId) => {
       switch (sortHeaderId) {
@@ -59,7 +62,7 @@ export class TasksComponent implements OnInit, AfterViewInit {
     };
   }
 
-  protected displayedColumns: string[] = [
+  displayedColumns: string[] = [
     'completed',
     'title',
     'deadline',
