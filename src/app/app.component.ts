@@ -9,9 +9,9 @@ import { ICategory, ITask } from './models';
 })
 export class AppComponent implements OnInit {
   title = 'todo-client-angular';
-
   tasks!: ITask[];
-  categories!: ICategory[];
+  categories: ICategory[] = [];
+  selectedCategory?: ICategory;
   constructor(private readonly dataService: DataService) {}
   ngOnInit() {
     this.dataService.getAll().subscribe(tasks => {
@@ -20,5 +20,17 @@ export class AppComponent implements OnInit {
     this.dataService.getAllCategories().subscribe(categories => {
       this.categories = categories;
     });
+  }
+
+  onSelectCategory($event: ICategory) {
+    this.selectedCategory = $event;
+
+    this.dataService
+      .fillTasksByCategories(this.selectedCategory)
+      .subscribe(tasks => (this.tasks = tasks));
+  }
+
+  onUpdateTask($event: ITask) {
+    console.log($event);
   }
 }

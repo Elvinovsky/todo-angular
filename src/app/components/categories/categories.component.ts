@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ICategory } from '../../models';
 
 @Component({
@@ -7,22 +6,25 @@ import { ICategory } from '../../models';
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css'],
 })
-export class CategoriesComponent implements OnInit {
-  selectedCategory = {} as ICategory;
+export class CategoriesComponent {
   @Input({ required: true }) categories!: ICategory[];
-  constructor(private readonly httpService: DataService) {}
-  ngOnInit() {
-    // this.httpService
-    //   .getAllCategories()
-    //   .subscribe(categories => (this.categories = categories));
-  }
+
+  @Output()
+  selectCategory = new EventEmitter<ICategory>();
+
+  selectedCategory?: ICategory;
 
   trackByFn(index: number, category: ICategory) {
     return category.id;
   }
 
   showTasksByCategory(category: ICategory): void {
-    // this.selectedCategory = category;
-    // this.httpService.fillTasksByCategories(category);
+    if (this.selectedCategory === category) {
+      return;
+    }
+
+    this.selectedCategory = category;
+
+    this.selectCategory.emit(category);
   }
 }

@@ -41,7 +41,6 @@ export class DataService {
 
   toggleCompletedTask(id: number, completed: boolean) {
     const index = Db.tasks.findIndex(item => item.id === id);
-    console.log(Db.tasks[index]);
     if (index !== -1) {
       Db.tasks[index].completed = completed;
     }

@@ -22,7 +22,7 @@
       </div>
     </div>
   </div>
-  <div class="card-body" *ngIf="tasks.length > 0; else elseBlock">
+  <div class="card-body" *ngIf="tasks && tasks.length > 0; else elseBlock">
     <mat-table
       mat-table
       [dataSource]="dataSource"
@@ -46,7 +46,8 @@
         <td
           mat-cell
           *matCellDef="let task"
-          [ngClass]="{ completed: task.completed }">
+          [ngClass]="{ completed: task.completed }"
+          (click)="onUpdateTask(task)">
           {{ task.title }}
         </td>
       </ng-container>

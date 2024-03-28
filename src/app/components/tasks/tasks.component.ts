@@ -1,8 +1,10 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { ITask } from '../../models';
@@ -17,11 +19,18 @@ import { DataService } from '../../services/data.service';
   styleUrls: ['./tasks.component.css'],
 })
 export class TasksComponent implements OnInit, AfterViewInit {
+  dataSource: MatTableDataSource<ITask>;
+  tasks: ITask[] = [];
   @ViewChild(MatPaginator) private paginator!: MatPaginator;
   @ViewChild(MatSort) private sort!: MatSort;
 
-  @Input({ required: true }) tasks!: ITask[];
-  dataSource: MatTableDataSource<ITask>;
+  @Input()
+  set setTasks(tasks: ITask[]) {
+    this.tasks = tasks;
+    this.fillTable();
+  }
+
+  @Output() updateTask = new EventEmitter<ITask>();
 
   constructor(private readonly dataService: DataService) {
     this.dataSource = new MatTableDataSource<ITask>();
@@ -36,11 +45,18 @@ export class TasksComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+  onUpdateTask(task: ITask) {
+    this.updateTask.emit(task);
+  }
   handleCheckedCompleted(id: number, completed: boolean) {
     this.dataService.toggleCompletedTask(id, completed);
   }
 
   fillTable() {
+    if (!this.dataSource) {
+      return;
+    }
+
     this.dataSource.data = this.tasks;
     this.dataSource.sortingDataAccessor = (task, sortHeaderId) => {
       switch (sortHeaderId) {

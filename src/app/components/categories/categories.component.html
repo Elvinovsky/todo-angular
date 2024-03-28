@@ -10,7 +10,9 @@
     <ul
       class="nav"
       *ngFor="let category of categories; index as i; trackBy: trackByFn">
-      <li class="nav-item" [class.active]="category.id === selectedCategory.id">
+      <li
+        class="nav-item"
+        [class.active]="category.id === selectedCategory?.id">
         <a
           tabindex="0"
           (keydown.enter)="showTasksByCategory(category)"
