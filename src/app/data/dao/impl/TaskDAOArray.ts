@@ -1,9 +1,9 @@
-import { TaskDAO } from '../interface/TaskDAO';
+import { TaskRepository } from '../interface/TaskRepository';
 import { Observable, of } from 'rxjs';
 import { ICategory, IPriority, ITask } from '../../../models';
 import { Db } from '../../db';
 
-export class TaskDAOArray implements TaskDAO {
+export class TaskDAOArray implements TaskRepository {
   getAll(): Observable<ITask[]> {
     return of(Db.tasks);
   }
@@ -17,12 +17,16 @@ export class TaskDAOArray implements TaskDAO {
     return of(inputModel);
   }
 
-  deleteById(id: number): Observable<ITask> {
+  deleteById(id: number): Observable<boolean> {
     const index = Db.tasks.findIndex(item => item.id === id);
     if (index !== -1) {
+      console.log(Db.tasks[index]);
       Db.tasks.splice(index, 1);
+      console.log(Db.tasks[index]);
+      return of(true);
     }
-    return of(Db.tasks[index]);
+
+    return of(false);
   }
 
   getCompletedCountInCategory(category: ICategory): Observable<number> {

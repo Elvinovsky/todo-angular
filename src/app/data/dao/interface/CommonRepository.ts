@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
 
-export abstract class CommonDAO<T> {
+export abstract class CommonRepository<T> {
   abstract add(T: T): Observable<T>;
-  abstract deleteById(id: number): Observable<T>;
+  abstract deleteById(id: string): Observable<boolean>;
   abstract update(inputModel: T): Observable<T>;
-  abstract getById(id: number): Observable<T | null>;
+  abstract getById(id: string): Observable<T | null>;
   abstract getAll(): Observable<T[]>;
 }

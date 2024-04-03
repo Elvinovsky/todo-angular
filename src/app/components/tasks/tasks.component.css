@@ -10,3 +10,18 @@
   color: #b0b0b0;
   margin: 20px
 }
+
+.demo-table {
+  width: 100%;
+}
+
+.mat-column-title {
+  width: 100%;
+  padding-right: 25px;
+  text-align: left;
+}
+
+.button-edit-delete {
+  width: 50%;
+  height: 50%;
+}

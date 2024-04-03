@@ -1,20 +1,21 @@
-import { PriorityDAO } from '../interface/PriorityDAO';
+import { PriorityRepository } from '../interface/PriorityRepository';
 import { Observable, of } from 'rxjs';
 import { IPriority } from '../../../models';
 import { Db } from '../../db';
 
-export class PriorityDAOArray implements PriorityDAO {
+export class PriorityDAOArray implements PriorityRepository {
   add(input: IPriority): Observable<IPriority> {
     Db.priorities.push(input);
     return of(input);
   }
 
-  deleteById(id: number): Observable<IPriority> {
+  deleteById(id: number): Observable<boolean> {
     const index = Db.priorities.findIndex(item => item.id === id);
     if (index !== -1) {
       Db.priorities.splice(index, 1);
+      return of(true);
     }
-    return of(Db.priorities[index]);
+    return of(false);
   }
 
   getById(id: number): Observable<IPriority | null> {

@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content class="mat-dialog-container">
+  <mat-form-field class="mat-form-title">
+    <mat-label>Название (обязательно)</mat-label>
+    <input matInput [(ngModel)]="tmpTitle" />
+    <button
+      mat-icon-button
+      matIconSuffix
+      aria-label="Clear"
+      *ngIf="tmpTitle"
+      (click)="tmpTitle = ''">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <mat-form-field class="mat-form-common">
+    <mat-label>Срок</mat-label>
+    <input
+      matInput
+      readonly="true"
+      [matDatepicker]="picker"
+      [(ngModel)]="tmpDeadline"
+      (click)="picker.open()" />
+    <button
+      mat-icon-button
+      matIconSuffix
+      aria-label="Clear"
+      *ngIf="tmpDeadline"
+      (click)="tmpDeadline = undefined">
+      <mat-icon>clear</mat-icon>
+    </button>
+    <mat-datepicker-toggle
+      *ngIf="!tmpDeadline"
+      matIconSuffix
+      [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field class="mat-form-common">
+    <mat-label>Приоритет</mat-label>
+    <mat-select [(ngModel)]="tmpPriority">
+      <mat-option [value]="null">Без категории</mat-option>
+      <mat-option
+        *ngFor="let priority of priorities$ | async"
+        [value]="priority">
+        {{ priority.title }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="mat-form-common">
+    <mat-label>Категория</mat-label>
+    <mat-select [(ngModel)]="tmpCategory">
+      <mat-option [value]="null">Без категории</mat-option>
+      <mat-option *ngFor="let cat of categories$ | async" [value]="cat">
+        {{ cat.title }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button
+    mat-button
+    [disabled]="!tmpTitle.trim()"
+    (click)="onConfirm()"
+    cdkFocusInitial>
+    Сохранить
+  </button>
+  <button mat-button (click)="onNoClick()">Отмена</button>
+</mat-dialog-actions>

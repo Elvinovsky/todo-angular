@@ -169,7 +169,8 @@
           </div>
         </div>
         <app-tasks
-          (updateTask)="onUpdateTask($event)"
+          (taskUpdated)="onUpdateTask($event)"
+          (taskDeleted)="onDeleteTask($event)"
           [setTasks]="tasks"></app-tasks>
       </div>
     </div>

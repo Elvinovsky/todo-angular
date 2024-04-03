@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content class="mat-confirm-dialog-container">
+  {{ message }}
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onConfirm()" cdkFocusInitial>Ok</button>
+  <button mat-button (click)="onNoClick()">Отмена</button>
+</mat-dialog-actions>

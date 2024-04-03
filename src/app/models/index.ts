@@ -1,16 +1,16 @@
 export interface ICategory {
-  id: number;
+  id: string;
   title: string;
 }
 
 export interface IPriority {
-  id: number;
+  id: string;
   title: string;
   color: string;
 }
 
 export interface ITask {
-  id: number;
+  id: string;
   title: string;
   completed: boolean;
   priority?: IPriority;
