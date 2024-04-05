@@ -8,7 +8,7 @@ export class TaskDAOArray implements TaskRepository {
     return of(Db.tasks);
   }
 
-  getById(id: number): Observable<ITask | null> {
+  getById(id: string): Observable<ITask | null> {
     return of(Db.tasks.find(item => item.id === id) ?? null);
   }
 
@@ -17,7 +17,7 @@ export class TaskDAOArray implements TaskRepository {
     return of(inputModel);
   }
 
-  deleteById(id: number): Observable<boolean> {
+  deleteById(id: string): Observable<boolean> {
     const index = Db.tasks.findIndex(item => item.id === id);
     if (index !== -1) {
       console.log(Db.tasks[index]);

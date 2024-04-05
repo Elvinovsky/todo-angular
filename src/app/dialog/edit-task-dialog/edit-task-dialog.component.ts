@@ -41,6 +41,7 @@ export class EditTaskDialogComponent implements OnInit {
     this.task.deadline = this.tmpDeadline;
     this.task.priority = this.tmpPriority;
     this.task.category = this.tmpCategory;
+
     this.dialogRef.close(this.task);
   }
 

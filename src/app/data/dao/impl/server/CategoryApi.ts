@@ -12,7 +12,7 @@ export class CategoryApi implements CategoryRepository {
   constructor(private httpServer: HttpClient) {}
   getById(id: string): Observable<ICategory | null> {
     return this.httpServer.get<ICategory | null>(
-      environment.SERVER_URL + `/category/${id}`
+      environment.SERVER_URL + `/category/find/${id}`
     );
   }
 

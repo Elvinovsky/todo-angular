@@ -39,7 +39,7 @@
   <mat-form-field class="mat-form-common">
     <mat-label>Приоритет</mat-label>
     <mat-select [(ngModel)]="tmpPriority">
-      <mat-option [value]="null">Без категории</mat-option>
+      <mat-option [value]="undefined">Без приоритета</mat-option>
       <mat-option
         *ngFor="let priority of priorities$ | async"
         [value]="priority">
@@ -51,7 +51,7 @@
   <mat-form-field class="mat-form-common">
     <mat-label>Категория</mat-label>
     <mat-select [(ngModel)]="tmpCategory">
-      <mat-option [value]="null">Без категории</mat-option>
+      <mat-option [value]="undefined">Без категории</mat-option>
       <mat-option *ngFor="let cat of categories$ | async" [value]="cat">
         {{ cat.title }}
       </mat-option>

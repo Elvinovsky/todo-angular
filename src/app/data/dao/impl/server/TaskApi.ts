@@ -13,7 +13,7 @@ export class TaskApi implements TaskRepository {
   constructor(private httpServer: HttpClient) {}
   getById(id: string): Observable<ITask | null> {
     return this.httpServer.get<ITask | null>(
-      environment.SERVER_URL + `/tasks/${id}`
+      environment.SERVER_URL + `/tasks/find/${id}`
     );
   }
 
@@ -50,13 +50,13 @@ export class TaskApi implements TaskRepository {
     status?: boolean,
     priority?: IPriority
   ): Observable<ITask[]> {
+    const optionQuery = `${category ? `categoryId=${category.id}` : ''}
+        ${searchText ? `&title=${searchText}` : ''}
+        ${status ? `&status=${status}` : ''}
+        ${priority ? `&priorityId=${priority.id}` : ''}`;
+    console.log(optionQuery);
     return this.httpServer.get<ITask[]>(
-      environment.SERVER_URL +
-        `/tasks?
-        ${category ? `categoryId=${category.id}&` : ''}
-        ${searchText ? `title=${searchText}&` : ''}
-        ${status ? `status=${status}&` : ''}
-        ${priority ? `priorityId=${priority.id}` : ''}`
+      environment.SERVER_URL + `/tasks/search?${optionQuery}`
     );
   }
 

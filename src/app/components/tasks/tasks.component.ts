@@ -55,6 +55,7 @@ export class TasksComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe((result: ITask) => {
       if (result) {
+        console.log(result);
         this.taskUpdated.emit(result);
       }
     });

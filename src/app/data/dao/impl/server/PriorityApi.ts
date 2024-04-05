@@ -12,7 +12,7 @@ export class PriorityApi implements PriorityRepository {
   constructor(private httpServer: HttpClient) {}
   getById(id: string): Observable<IPriority | null> {
     return this.httpServer.get<IPriority | null>(
-      environment.SERVER_URL + `/priority/${id}`
+      environment.SERVER_URL + `/priority/find/${id}`
     );
   }
 

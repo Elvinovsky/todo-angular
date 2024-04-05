@@ -39,8 +39,10 @@ export class DateFormatPipe implements PipeTransform {
     return this.formatDate(value);
   }
 
-  private isValidDate(date: unknown): boolean {
-    return date instanceof Date && !isNaN(date.getTime());
+  private isValidDate(date: string | number | Date): boolean {
+    return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(
+      date.toString()
+    );
   }
 
   private formatDate(value: string | number | Date): string {
