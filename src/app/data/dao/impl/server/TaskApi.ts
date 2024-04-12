@@ -10,31 +10,31 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class TaskApi implements TaskRepository {
-  constructor(private httpServer: HttpClient) {}
+  constructor(private _httpServer: HttpClient) {}
   getById(id: string): Observable<ITask | null> {
-    return this.httpServer.get<ITask | null>(
+    return this._httpServer.get<ITask | null>(
       environment.SERVER_URL + `/tasks/find/${id}`
     );
   }
 
   getAll(): Observable<ITask[]> {
-    return this.httpServer.get<ITask[]>(environment.SERVER_URL + `/tasks`);
+    return this._httpServer.get<ITask[]>(environment.SERVER_URL + `/tasks`);
   }
 
   add(task: ITask): Observable<ITask> {
-    return this.httpServer.post<ITask>(environment.SERVER_URL + `/tasks`, {
+    return this._httpServer.post<ITask>(environment.SERVER_URL + `/tasks`, {
       ...task,
     });
   }
 
   deleteById(id: string): Observable<boolean> {
-    return this.httpServer.delete<boolean>(
+    return this._httpServer.delete<boolean>(
       environment.SERVER_URL + `/tasks/${id}`
     );
   }
 
   update(task: ITask): Observable<ITask> {
-    return this.httpServer.put<ITask>(environment.SERVER_URL + `/tasks`, {
+    return this._httpServer.put<ITask>(environment.SERVER_URL + `/tasks`, {
       id: task.id,
       title: task.title,
       completed: task.completed,
@@ -45,17 +45,14 @@ export class TaskApi implements TaskRepository {
   }
 
   search(
-    category?: ICategory,
-    searchText?: string,
-    status?: boolean,
-    priority?: IPriority
+    category?: ICategory | null,
+    searchText?: string | null,
+    status?: boolean | null,
+    priority?: IPriority | null
   ): Observable<ITask[]> {
-    const optionQuery = `${category ? `categoryId=${category.id}` : ''}
-        ${searchText ? `&title=${searchText}` : ''}
-        ${status ? `&status=${status}` : ''}
-        ${priority ? `&priorityId=${priority.id}` : ''}`;
+    const optionQuery = `${category ? `categoryId=${category.id}&` : ''}${searchText ? `searchText=${searchText}&` : ''}${status ? `status=${status}&` : ''}${priority ? `priorityId=${priority.id}&` : ''}`;
     console.log(optionQuery);
-    return this.httpServer.get<ITask[]>(
+    return this._httpServer.get<ITask[]>(
       environment.SERVER_URL + `/tasks/search?${optionQuery}`
     );
   }

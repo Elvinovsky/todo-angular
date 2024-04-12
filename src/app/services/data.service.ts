@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ICategory, ITask } from '../models';
+import { ICategory, IPriority, ITask } from '../models';
 import { TaskRepository } from '../data/dao/interface/TaskRepository';
 import { CategoryRepository } from '../data/dao/interface/CategoryRepository';
 import { PriorityRepository } from '../data/dao/interface/PriorityRepository';
@@ -25,16 +25,28 @@ export class DataService {
     return this.taskRepository.getAll();
   }
 
-  fillTasksByCategories(category: ICategory) {
-    return this.taskRepository.search(category);
+  searchTasksByFilters(
+    category?: ICategory | null,
+    searchText?: string | null,
+    status?: boolean | null,
+    priority?: IPriority | null
+  ) {
+    return this.taskRepository.search(category, searchText, status, priority);
   }
 
   updateTask(task: ITask) {
-    console.log(task);
     return this.taskRepository.update(task);
   }
 
   deleteTask(task: ITask) {
     return this.taskRepository.deleteById(task.id);
+  }
+
+  updateCategory(category: ICategory) {
+    return this.categoryRepository.update(category);
+  }
+
+  deleteCategory(category: ICategory) {
+    return this.categoryRepository.deleteById(category.id);
   }
 }

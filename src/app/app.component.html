@@ -1,7 +1,10 @@
 <div class="wrapper">
   <app-categories
+    [setCategory]="selectedCategory"
     (selectCategory)="onSelectCategory($event)"
-    [categories]="categories"></app-categories>
+    (updateCategory)="onUpdateCategory($event)"
+    (deleteCategory)="onDeleteCategory($event)"
+    [categories$]="categories$"></app-categories>
   <div class="main-panel">
     <!-- Navbar -->
     <nav
@@ -168,10 +171,19 @@
             </div>
           </div>
         </div>
-        <app-tasks
-          (taskUpdated)="onUpdateTask($event)"
-          (taskDeleted)="onDeleteTask($event)"
-          [setTasks]="tasks"></app-tasks>
+        <div class="row">
+          <div class="col-12">
+            <app-tasks
+              (selectCategory)="onSelectCategory($event)"
+              (taskUpdated)="onUpdateTask($event)"
+              (taskDeleted)="onDeleteTask($event)"
+              (filterByPriority)="onFilterTasksByPriority($event)"
+              (filterByStatus)="onFilterTasksByStatus($event)"
+              (filterByTitle)="onSearchTasksByTitle($event)"
+              [setPriorities]="priorities$"
+              [setTasks]="tasks$"></app-tasks>
+          </div>
+        </div>
       </div>
     </div>
     <footer class="footer">

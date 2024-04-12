@@ -9,21 +9,21 @@ import { environment } from '../../../../../environments/environment.development
   providedIn: 'root',
 })
 export class CategoryApi implements CategoryRepository {
-  constructor(private httpServer: HttpClient) {}
+  constructor(private _httpServer: HttpClient) {}
   getById(id: string): Observable<ICategory | null> {
-    return this.httpServer.get<ICategory | null>(
+    return this._httpServer.get<ICategory | null>(
       environment.SERVER_URL + `/category/find/${id}`
     );
   }
 
   getAll(): Observable<ICategory[]> {
-    return this.httpServer.get<ICategory[]>(
+    return this._httpServer.get<ICategory[]>(
       environment.SERVER_URL + `/category`
     );
   }
 
   add(category: ICategory): Observable<ICategory> {
-    return this.httpServer.post<ICategory>(
+    return this._httpServer.post<ICategory>(
       environment.SERVER_URL + `/category`,
       {
         ...category,
@@ -32,22 +32,20 @@ export class CategoryApi implements CategoryRepository {
   }
 
   deleteById(id: string): Observable<boolean> {
-    return this.httpServer.delete<boolean>(
+    return this._httpServer.delete<boolean>(
       environment.SERVER_URL + `/category/${id}`
     );
   }
 
   update(category: ICategory): Observable<ICategory> {
-    return this.httpServer.patch<ICategory>(
+    return this._httpServer.put<ICategory>(
       environment.SERVER_URL + `/category`,
-      {
-        ...category,
-      }
+      { id: category.id, title: category.title }
     );
   }
 
   search(title: string): Observable<ICategory | null> {
-    return this.httpServer.get<ICategory | null>(
+    return this._httpServer.get<ICategory | null>(
       environment.SERVER_URL + `/category`,
       {
         params: new HttpParams().set('search', title),

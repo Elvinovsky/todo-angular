@@ -40,9 +40,7 @@
     <mat-label>Приоритет</mat-label>
     <mat-select [(ngModel)]="tmpPriority">
       <mat-option [value]="undefined">Без приоритета</mat-option>
-      <mat-option
-        *ngFor="let priority of priorities$ | async"
-        [value]="priority">
+      <mat-option *ngFor="let priority of priorities" [value]="priority">
         {{ priority.title }}
       </mat-option>
     </mat-select>
@@ -52,7 +50,7 @@
     <mat-label>Категория</mat-label>
     <mat-select [(ngModel)]="tmpCategory">
       <mat-option [value]="undefined">Без категории</mat-option>
-      <mat-option *ngFor="let cat of categories$ | async" [value]="cat">
+      <mat-option *ngFor="let cat of categories" [value]="cat">
         {{ cat.title }}
       </mat-option>
     </mat-select>
@@ -60,11 +58,13 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button
+    class="col-5"
     mat-button
     [disabled]="!tmpTitle.trim()"
     (click)="onConfirm()"
     cdkFocusInitial>
     Сохранить
   </button>
-  <button mat-button (click)="onNoClick()">Отмена</button>
+
+  <button class="col-5" mat-button (click)="onNoClick()">Отмена</button>
 </mat-dialog-actions>

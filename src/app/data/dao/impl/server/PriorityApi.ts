@@ -9,21 +9,21 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class PriorityApi implements PriorityRepository {
-  constructor(private httpServer: HttpClient) {}
+  constructor(private _httpServer: HttpClient) {}
   getById(id: string): Observable<IPriority | null> {
-    return this.httpServer.get<IPriority | null>(
+    return this._httpServer.get<IPriority | null>(
       environment.SERVER_URL + `/priority/find/${id}`
     );
   }
 
   getAll(): Observable<IPriority[]> {
-    return this.httpServer.get<IPriority[]>(
+    return this._httpServer.get<IPriority[]>(
       environment.SERVER_URL + `/priority`
     );
   }
 
   add(priority: IPriority): Observable<IPriority> {
-    return this.httpServer.post<IPriority>(
+    return this._httpServer.post<IPriority>(
       environment.SERVER_URL + `/priority`,
       {
         ...priority,
@@ -32,13 +32,13 @@ export class PriorityApi implements PriorityRepository {
   }
 
   deleteById(id: string): Observable<boolean> {
-    return this.httpServer.delete<boolean>(
+    return this._httpServer.delete<boolean>(
       environment.SERVER_URL + `/priority/${id}`
     );
   }
 
   update(priority: IPriority): Observable<IPriority> {
-    return this.httpServer.patch<IPriority>(
+    return this._httpServer.patch<IPriority>(
       environment.SERVER_URL + `/priority`,
       {
         ...priority,

@@ -4,26 +4,72 @@
   data-color="purple"
   data-image="src/assets/img/sidebar-1.jpg">
   <div class="logo">
-    <span class="simple-text logo-normal"> Creative Tim </span>
+    <span class="simple-text logo-normal"> Категории </span>
   </div>
   <div class="sidebar-wrapper">
-    <ul
-      class="nav"
-      *ngFor="let category of categories; index as i; trackBy: trackByFn">
-      <li
-        class="nav-item"
-        [class.active]="category.id === selectedCategory?.id">
-        <a
-          tabindex="0"
-          (keydown.enter)="showTasksByCategory(category)"
-          class="nav-link"
-          style="cursor: pointer"
-          (click)="showTasksByCategory(category)">
-          <span>
-            {{ category.title }}
-          </span>
-        </a>
-      </li>
+    <ul class="nav">
+      <ng-container
+        *ngIf="categories$ | async as categoryList; else loadingCategories">
+        <li class="nav-item" [class.active]="!selectedCategory">
+          <a
+            tabindex="0"
+            (keydown.enter)="showAllTasks()"
+            class="category-title"
+            style="cursor: pointer"
+            (click)="showAllTasks()">
+            <span> Все </span>
+          </a>
+        </li>
+        <div class="line"></div>
+        <li
+          class="nav-item"
+          *ngFor="let category of categoryList; trackBy: trackByFn"
+          [class.active]="category.id === selectedCategory?.id">
+          <a
+            tabindex="1"
+            class="nav-link nav-item"
+            style="cursor: pointer"
+            (keydown.enter)="showTasksByCategory(category)"
+            (mouseenter)="showEditIcon(category.id)"
+            (mouseleave)="showEditIcon(null)"
+            (click)="showTasksByCategory(category)">
+            <span class="category-title">{{ category.title }}</span>
+
+            <!--  изменение категории --->
+            <span
+              tabindex="1"
+              (keydown.alt)="edit(category)"
+              matTooltip="Изменить категоорию"
+              [tabIndex]="category.id"
+              (click)="edit(category); $event.stopPropagation()">
+              <mat-icon
+                *ngIf="indexMouseMove === category.id"
+                class="edit-category-icon-area"
+                >edit</mat-icon
+              >
+            </span>
+            <!--  удаление категории --->
+            <span
+              tabindex="1"
+              (keydown.alt)="delete(category)"
+              matTooltip="Удалить категоорию"
+              [tabIndex]="category.id"
+              (click)="delete(category); $event.stopPropagation()">
+              <mat-icon
+                *ngIf="indexMouseMove === category.id"
+                class="edit-category-icon-area"
+                >delete</mat-icon
+              >
+            </span>
+          </a>
+        </li>
+      </ng-container>
+
+      <ng-template #loadingCategories>
+        <li class="nav-item">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </li>
+      </ng-template>
     </ul>
   </div>
 </div>

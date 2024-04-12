@@ -4,7 +4,7 @@ import { ICategory } from '../../../models';
 import { Db } from '../../db';
 
 export class CategoryDAOArray implements CategoryRepository {
-  getById(id: number): Observable<ICategory | null> {
+  getById(id: string): Observable<ICategory | null> {
     return of(Db.categories.find(item => item.id === id) ?? null);
   }
 
@@ -16,7 +16,7 @@ export class CategoryDAOArray implements CategoryRepository {
     Db.categories.push(category);
     return of(category);
   }
-  deleteById(id: number): Observable<boolean> {
+  deleteById(id: string): Observable<boolean> {
     const index = Db.categories.findIndex(item => item.id === id);
     if (index !== -1) {
       Db.categories.splice(index, 1);

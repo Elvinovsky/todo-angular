@@ -25,3 +25,18 @@
   width: 50%;
   height: 50%;
 }
+
+.link:hover  {
+  cursor: pointer;
+  text-decoration: underline
+}
+
+.small-mat-form-field {
+  display: inline-block;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  width: 100%; /* Задайте нужную ширину */
+  height: 50px; /* Задайте нужную высоту */
+  font-size: 14px; /* Уменьшите размер шрифта по вашему усмотрению */
+  box-sizing: border-box; /* Учитывайте границы и поля при расчете размера */overflow: hidden; /* Скрыть содержимое, если оно выходит за границы */
+}

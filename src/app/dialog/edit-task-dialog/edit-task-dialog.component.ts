@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
 import { ICategory, IPriority, ITask } from '../../models';
 import { DataService } from '../../services/data.service';
 
@@ -13,8 +12,8 @@ export class EditTaskDialogComponent implements OnInit {
   public dialogTitle!: string;
   public tmpTitle!: string;
   public task!: ITask;
-  public categories$!: Observable<ICategory[]>;
-  public priorities$!: Observable<IPriority[]>;
+  public categories!: ICategory[];
+  public priorities!: IPriority[];
   public tmpPriority?: IPriority;
   public tmpCategory?: ICategory;
   public tmpDeadline?: Date;
@@ -23,17 +22,24 @@ export class EditTaskDialogComponent implements OnInit {
     private dataService: DataService,
     public dialogRef: MatDialogRef<EditTaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { task: ITask; dialogTitle: string }
-  ) {}
+  ) {
+    this.dataService.getAllCategories().subscribe(res => {
+      this.categories = res;
+    });
+
+    this.dataService.getAllPriorities().subscribe(res => {
+      this.priorities = res;
+    });
+  }
 
   ngOnInit(): void {
     this.task = this.data.task;
     this.dialogTitle = this.data.dialogTitle;
     this.tmpTitle = this.task.title;
+
+    this.tmpDeadline = this.task.deadline;
     this.tmpCategory = this.task.category;
     this.tmpPriority = this.task.priority;
-    this.tmpDeadline = this.task.deadline;
-    this.categories$ = this.dataService.getAllCategories();
-    this.priorities$ = this.dataService.getAllPriorities();
   }
 
   onConfirm(): void {

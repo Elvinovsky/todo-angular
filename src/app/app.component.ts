@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from './services/data.service';
-import { ICategory, ITask } from './models';
-import { forkJoin } from 'rxjs';
+import { ICategory, IPriority, ITask } from './models';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +10,14 @@ import { forkJoin } from 'rxjs';
 })
 export class AppComponent implements OnInit {
   title = 'todo-client-angular';
-  tasks: ITask[] = [];
-  categories: ICategory[] = [];
-  selectedCategory?: ICategory;
+  public tasks$!: Observable<ITask[]>;
+  public categories$!: Observable<ICategory[]>;
+  public priorities$!: Observable<IPriority[]>;
+
+  public selectedCategory: ICategory | null = null;
+  private searchTaskText?: string | null;
+  private priorityFilter?: IPriority | null;
+  private statusFilter?: boolean | null;
 
   constructor(private readonly dataService: DataService) {}
 
@@ -21,36 +26,45 @@ export class AppComponent implements OnInit {
   }
 
   loadData() {
-    forkJoin({
-      tasks: this.dataService.getAll(),
-      categories: this.dataService.getAllCategories(),
-    }).subscribe({
-      next: ({ tasks, categories }) => {
-        this.tasks = tasks;
-        this.categories = categories;
-      },
-      error: error => {
-        // Обработка ошибки
-        console.error('Failed to load data:', error);
-      },
-    });
+    this.tasks$ = this.dataService.getAll();
+    this.categories$ = this.dataService.getAllCategories();
+    this.priorities$ = this.dataService.getAllPriorities();
   }
 
   onSelectCategory(category: ICategory) {
     this.selectedCategory = category;
-    this.dataService.fillTasksByCategories(category).subscribe({
-      next: tasks => {
-        this.tasks = tasks;
+    this.updateTasks();
+  }
+
+  onFilterTasksByPriority(priority: IPriority | null) {
+    this.priorityFilter = priority;
+    this.updateTasks();
+  }
+
+  onUpdateCategory(category: ICategory) {
+    this.dataService.updateCategory(category).subscribe({
+      next: () => {
+        this.updateTasks();
       },
       error: error => {
-        // Обработка ошибки
-        console.error('Failed to load tasks for category:', error);
+        console.error('Failed to update category:', error);
+      },
+    });
+  }
+
+  onDeleteCategory(category: ICategory) {
+    this.dataService.deleteCategory(category).subscribe({
+      next: () => {
+        this.selectedCategory = null;
+        this.updateTasks();
+      },
+      error: error => {
+        console.error('Failed to update task:', error);
       },
     });
   }
 
   onUpdateTask(task: ITask) {
-    console.log(task);
     this.dataService.updateTask(task).subscribe({
       next: () => {
         this.loadData();
@@ -59,7 +73,6 @@ export class AppComponent implements OnInit {
         }
       },
       error: error => {
-        // Обработка ошибки
         console.error('Failed to update task:', error);
       },
     });
@@ -68,15 +81,33 @@ export class AppComponent implements OnInit {
   onDeleteTask(task: ITask) {
     this.dataService.deleteTask(task).subscribe({
       next: () => {
-        this.loadData();
+        this.updateTasks();
         if (this.selectedCategory) {
           this.onSelectCategory(this.selectedCategory);
         }
       },
       error: error => {
-        // Обработка ошибки
         console.error('Failed to delete task:', error);
       },
     });
+  }
+
+  private updateTasks(): void {
+    this.tasks$ = this.dataService.searchTasksByFilters(
+      this.selectedCategory,
+      this.searchTaskText,
+      this.statusFilter,
+      this.priorityFilter
+    );
+  }
+
+  onFilterTasksByStatus($event: null | boolean) {
+    this.statusFilter = $event;
+    this.updateTasks();
+  }
+
+  onSearchTasksByTitle($event: string | null) {
+    this.searchTaskText = $event;
+    this.updateTasks();
   }
 }

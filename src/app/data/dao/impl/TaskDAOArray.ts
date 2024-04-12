@@ -58,10 +58,10 @@ export class TaskDAOArray implements TaskRepository {
   }
 
   search(
-    category?: ICategory,
-    searchText?: string,
-    status?: boolean,
-    priority?: IPriority
+    category?: ICategory | null,
+    searchText?: string | null,
+    status?: boolean | null,
+    priority?: IPriority | null
   ): Observable<ITask[]> {
     if (category) {
       return of(Db.tasks.filter(item => item.category?.id === category?.id));

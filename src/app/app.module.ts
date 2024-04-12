@@ -35,6 +35,10 @@ import localeRu from '@angular/common/locales/ru';
 import { TaskApi } from './data/dao/impl/server/TaskApi';
 import { CategoryApi } from './data/dao/impl/server/CategoryApi';
 import { PriorityApi } from './data/dao/impl/server/PriorityApi';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { EditCategoryDialogComponent } from './dialog/edit-category-dialog/edit-category-dialog.component';
+import { MatChipInput } from '@angular/material/chips';
 
 registerLocaleData(localeRu);
 @NgModule({
@@ -43,6 +47,7 @@ registerLocaleData(localeRu);
     CategoriesComponent,
     TasksComponent,
     EditTaskDialogComponent,
+    EditCategoryDialogComponent,
     ConfirmDialogComponent,
     DateFormatPipe,
   ],
@@ -67,6 +72,10 @@ registerLocaleData(localeRu);
     MatDatepickerModule,
     MatOptionModule,
     MatSelectModule,
+    MatTooltip,
+    HttpClientModule,
+    MatProgressBarModule,
+    MatChipInput,
   ],
   providers: [
     provideAnimationsAsync(),

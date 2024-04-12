@@ -3,48 +3,98 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
-import { ITask } from '../../models';
+import { ICategory, IPriority, ITask } from '../../models';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { EditTaskDialogComponent } from '../../dialog/edit-task-dialog/edit-task-dialog.component';
 import { ConfirmDialogComponent } from '../../dialog/confirm-dialog/confirm-dialog.component';
+import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.css'],
 })
-export class TasksComponent implements OnInit, AfterViewInit {
-  public dataSource: MatTableDataSource<ITask>;
-  public tasks: ITask[] = [];
+export class TasksComponent implements AfterViewInit {
+  public searchText: string | null = null;
+  public dataSource!: MatTableDataSource<ITask>;
+  public tasks$?: Observable<ITask[]>;
+  public priorities$?: Observable<IPriority[]>;
+  public selectedCategory?: ICategory;
+
+  public selectedStatusFilter: boolean | null = null;
+  public selectedPriorityFilter: IPriority | null = null;
+
   @ViewChild(MatPaginator) private paginator!: MatPaginator;
   @ViewChild(MatSort) private sort!: MatSort;
 
-  @Input() set setTasks(tasks: ITask[]) {
-    this.tasks = tasks;
+  @Input() set setTasks(tasks: Observable<ITask[]>) {
+    this.tasks$ = tasks;
     this.fillTable();
   }
+  @Input()
+  set setPriorities(priorities: Observable<IPriority[]>) {
+    this.priorities$ = priorities;
+  }
 
+  @Output() selectCategory = new EventEmitter<ICategory>();
   @Output() taskUpdated = new EventEmitter<ITask>();
   @Output() taskDeleted = new EventEmitter<ITask>();
+
+  @Output() filterByStatus = new EventEmitter<boolean | null>();
+  @Output() filterByTitle = new EventEmitter<string | null>();
+  @Output() filterByPriority = new EventEmitter<IPriority | null>();
+
+  private searchSubject: Subject<string> = new Subject<string>();
 
   constructor(public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<ITask>();
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.fillTable();
+    this.initSearchListener();
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  fillTable() {
+    if (!this.tasks$) return;
+    this.tasks$.subscribe(data => {
+      this.dataSource.data = data;
+
+      if (this.paginator) this.dataSource.paginator = this.paginator;
+      if (this.sort) this.dataSource.sort = this.sort;
+
+      this.dataSource.sortingDataAccessor = (task, sortHeaderId) => {
+        switch (sortHeaderId) {
+          case 'deadline':
+            return task.deadline ? task.deadline.toString() : '';
+
+          case 'priority':
+            return task.priority?.title ?? '';
+
+          case 'category':
+            return task.category?.title ?? '';
+
+          case 'title':
+            return task.title;
+
+          default:
+            return task.completed ? 1 : 0;
+        }
+      };
+    });
+  }
+
+  showTasksByCategory(category: ICategory): void {
+    if (this.selectedCategory === category) return;
+
+    this.selectedCategory = category;
+    this.selectCategory.emit(category);
   }
 
   edit(task: ITask): void {
@@ -55,7 +105,6 @@ export class TasksComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe((result: ITask) => {
       if (result) {
-        console.log(result);
         this.taskUpdated.emit(result);
       }
     });
@@ -81,28 +130,30 @@ export class TasksComponent implements OnInit, AfterViewInit {
     this.taskUpdated.emit(task);
   }
 
-  fillTable() {
-    this.dataSource.data = this.tasks;
-    this.dataSource.sortingDataAccessor = (task, sortHeaderId) => {
-      switch (sortHeaderId) {
-        case 'deadline':
-          return task.deadline ? task.deadline.toISOString() : '';
-
-        case 'priority':
-          return task.priority?.title ?? '';
-
-        case 'category':
-          return task.category?.title ?? '';
-
-        case 'title':
-          return task.title;
-
-        default:
-          return task.completed ? 1 : 0;
-      }
-    };
+  onFilterByStatus(value: boolean | null) {
+    if (value !== this.selectedStatusFilter) {
+      this.selectedStatusFilter = value;
+      this.filterByStatus.emit(this.selectedStatusFilter);
+    }
   }
 
+  clearSearchTitleInput() {
+    this.searchText = null;
+    this.filterByTitle.emit(this.searchText);
+  }
+
+  onFilterByPriority(value: IPriority | null) {
+    if (value !== this.selectedPriorityFilter) {
+      this.selectedPriorityFilter = value;
+      this.filterByPriority.emit(this.selectedPriorityFilter);
+    }
+  }
+
+  onSearchTitleInputChange() {
+    if (this.searchText !== null) {
+      this.searchSubject.next(this.searchText);
+    }
+  }
   displayedColumns: string[] = [
     'completed',
     'title',
@@ -112,4 +163,12 @@ export class TasksComponent implements OnInit, AfterViewInit {
     'edit',
     'delete',
   ];
+
+  private initSearchListener() {
+    this.searchSubject
+      .pipe(debounceTime(2000), distinctUntilChanged())
+      .subscribe(searchStr => {
+        this.filterByTitle.emit(searchStr);
+      });
+  }
 }

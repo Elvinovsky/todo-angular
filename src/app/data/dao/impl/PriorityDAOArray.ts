@@ -9,7 +9,7 @@ export class PriorityDAOArray implements PriorityRepository {
     return of(input);
   }
 
-  deleteById(id: number): Observable<boolean> {
+  deleteById(id: string): Observable<boolean> {
     const index = Db.priorities.findIndex(item => item.id === id);
     if (index !== -1) {
       Db.priorities.splice(index, 1);
@@ -18,7 +18,7 @@ export class PriorityDAOArray implements PriorityRepository {
     return of(false);
   }
 
-  getById(id: number): Observable<IPriority | null> {
+  getById(id: string): Observable<IPriority | null> {
     return of(Db.priorities.find(item => item.id === id) ?? null);
   }
 
