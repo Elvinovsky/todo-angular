@@ -50,8 +50,7 @@ export class TaskApi implements TaskRepository {
     status?: boolean | null,
     priority?: IPriority | null
   ): Observable<ITask[]> {
-    const optionQuery = `${category ? `categoryId=${category.id}&` : ''}${searchText ? `searchText=${searchText}&` : ''}${status ? `status=${status}&` : ''}${priority ? `priorityId=${priority.id}&` : ''}`;
-    console.log(optionQuery);
+    const optionQuery = `${category ? `categoryId=${category.id}&` : ''}${searchText ? `searchText=${searchText}&` : ''}${status !== null ? `status=${status}&` : ''}${priority ? `priorityId=${priority.id}&` : ''}`;
     return this._httpServer.get<ITask[]>(
       environment.SERVER_URL + `/tasks/search?${optionQuery}`
     );
